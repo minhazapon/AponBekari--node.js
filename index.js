@@ -36,12 +36,26 @@ async function run() {
   try {
 
     // Connect the client to the server	(optional starting in v4.7)
-
+     
+    const database = client.db('usersDB') 
+    const userCollection = database.collection('users')
 
     //crud//
 
+    app.post('/users',  async(req, res) => {
+
+        const users = req.body 
+        console.log(users) 
+        const result = await userCollection.insertOne(users)
+        console.log(result)
+        res.send(result)
+    
+    })
+
     
     //create//
+
+    
 
 
     //create//
