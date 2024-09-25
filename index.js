@@ -10,11 +10,29 @@ app.use(express.json());
 
 console.log(process.env.DB_USER)
 console.log(process.env.DB_PASS)
-
+ 
 
 app.get('/', (req, res) => {
   res.send(' This is apon Bekari Server ')
 })
+
+
+ const query = [
+
+     {id:1, title:'Premium Products', name:'biscute', img:'https://img.freepik.com/free-photo/top-view-delicious-snack-homemade-cookies_114579-88457.jpg?t=st=1727189204~exp=1727192804~hmac=60bd25fa21daff5284bbc5ce25af58a62ec1e5aa6194848509fa69125fc9d76c&w=740' },
+     {id:2, title:'Premium Products', name:'Breads', img:'https://img.freepik.com/premium-photo/tray-breads-with-sesame-seeds-it_1077535-14944.jpg?w=740' },
+     {id:3, title:'Premium Products', name:'Batter Cake', img:'https://img.freepik.com/premium-photo/female-hands-preparing-homemade-cheesecake-home-kitchen_271580-1361.jpg?w=740' },
+     {id:4, title:'Premium Products', name:'Cream Roll', img:'https://img.freepik.com/free-photo/side-view-swiss-roll-with-apricot-jam-black-board_141793-6222.jpg?t=st=1727189352~exp=1727192952~hmac=334a45a84e8809229648a3ea856748a0ca67041a2e7c24d2d4b8156bd7905003&w=740' },
+     {id:5, title:'Premium Products', name:'coclate cake', img:'https://img.freepik.com/free-photo/front-view-delicious-cake-concept_23-2148769308.jpg?t=st=1727189401~exp=1727193001~hmac=fa543b4a9b927a9177d0df57b152467b19a668448b9807e984d8e20c08bbc3ca&w=740' },
+     {id:6, title:'Premium Products', name:'Cheese Cake', img:'https://img.freepik.com/free-photo/fresh-cheesecake-served-with-mint_144627-521.jpg?t=st=1727189441~exp=1727193041~hmac=a875ae707201d3566b7cb7366b7b20f16bfafee3d66623f8f59a452df684de81&w=740' },
+
+ ]
+
+ app.get('/query', (req, res) => {
+  res.send(query)
+})
+
+
 
 
 const breads = [
@@ -29,12 +47,12 @@ const breads = [
     {id:8, img:'https://assets.nicepagecdn.com/d2cc3eaa/3379718/images/fgfgr.jpg', name:'White breads', details:'this companies breads are so good and premium plzzz take this companies products' }
 
 
-]
+] 
 
 app.get('/breads', (req, res) => {
   res.send(breads)
 })
-
+  
 
 ////////////////////////////////////////mongoDB/////////////////////////////
 
@@ -55,15 +73,42 @@ async function run() {
   try {
 
     // Connect the client to the server	(optional starting in v4.7)
+
+    //fireBaseData//
+    
+    
+    const signCollection = client.db('signDB').collection('sign')
+    const userCollection = client.db('usersDB').collection('users')
+
+
+    app.post('/signData',  async(req, res) => {
+             
+        const signData = req.body 
+        console.log(signData)
+        const signResult = await signCollection.insertOne(signData)
+        res.send(signResult)
+
+  
+    }) 
+
+
+    app.get('/signData',  async(req, res) => {
+             
+       const cursor = signCollection.find() 
+       const result = await cursor.toArray() 
+       res.send(result)
+
+  
+    }) 
+
+
+    //fireBaseData//
      
-    const database = client.db('usersDB') 
-    const userCollection = database.collection('users')
+    
 
     //crud//
 
-   
 
-    
     //create//
 
     app.post('/users',  async(req, res) => {
